@@ -1,16 +1,27 @@
+# インストールした discord.py を読み込む
 import discord
 
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print('Logged on as', self.user)
+# 自分のBotのアクセストークンに置き換えてください
+TOKEN = 'NTc2NjE5MTE0MTQzOTQwNjEx.XNZIZQ.iWF-y-QYICx7P4lTXz-mJAJJQOU'
 
-    async def on_message(self, message):
-        # don't respond to ourselves
-        if message.author == self.user:
-            return
+# 接続に必要なオブジェクトを生成
+client = discord.Client()
 
-        if message.content == 'ito':
-            await message.channel.send('はい')
+# 起動時に動作する処理
+@client.event
+async def on_ready():
+    # 起動したらターミナルにログイン通知が表示される
+    print('ログインしました')
 
-client = MyClient()
-client.run('token')
+# メッセージ受信時に動作する処理
+@client.event
+async def on_message(message):
+    # メッセージ送信者がBotだった場合は無視する
+    if message.author.bot:
+        return
+    # 「/neko」と発言したら「にゃーん」が返る処理
+    if message.content == '/neko':
+        await message.channel.send('にゃーん')
+
+# Botの起動とDiscordサーバーへの接続
+client.run(TOKEN)
