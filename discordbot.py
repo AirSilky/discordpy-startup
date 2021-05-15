@@ -1,21 +1,16 @@
-from discord.ext import commands
-import os
-import traceback
+import discord
 
-bot = commands.Bot(command_prefix='/')
-token = os.environ['DISCORD_BOT_TOKEN']
+class MyClient(discord.Client):
+    async def on_ready(self):
+        print('Logged on as', self.user)
 
+    async def on_message(self, message):
+        # don't respond to ourselves
+        if message.author == self.user:
+            return
 
-@bot.event
-async def on_command_error(ctx, error):
-    orig_error = getattr(error, "original", error)
-    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    await ctx.send(error_msg)
+        if message.content == 'ping':
+            await message.channel.send('pong')
 
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
-
-
-bot.run(token)
+client = MyClient()
+client.run('token')
