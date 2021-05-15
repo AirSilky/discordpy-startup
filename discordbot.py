@@ -9,8 +9,8 @@ class MyClient(discord.Client):
         if message.author == self.user:
             return
 
-        if message.content == 'ping':
-            await message.channel.send('pong')
+        if message.content == 'ito':
+            await message.channel.send('はい')
 
 client = MyClient()
 client.run('token')
